@@ -14,6 +14,26 @@ pipeline{
                 }
         }
         
+        stage('docker build image'){
+            steps{
+                script{
+                    sh 'docker build image 192.168.1.70:8083/helm-argocd:${BUILD_ID} .'
+
+                }
+            }
+        }
+        stage('docker image push nexus'){
+            steps{
+                script{
+                     withCredentials([string(credentialsId: 'nexus-token', variable: 'nexus_creds')]) {
+                        sh "docker login -u admin -p {nexus_creds} 192.168.1.70:8083"
+                        sh 'docker push 192.168.1.70:8083/helm-argocd:${BUILD_ID}'
+
+                }
+          
+                  }
+                    }
+        }
          stage('pushin helm chart to nexus'){
             steps{
                 script{
