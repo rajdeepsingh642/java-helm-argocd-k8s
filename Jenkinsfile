@@ -17,7 +17,7 @@ pipeline{
         stage('docker build image'){
             steps{
                 script{
-                    sh 'docker build image 192.168.1.70:8083/helm-argocd:${BUILD_ID} .'
+                    sh 'docker build -t 192.168.1.70:8083/helm-argocd:${BUILD_ID} .'
 
                 }
             }
